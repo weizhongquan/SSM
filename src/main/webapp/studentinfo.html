@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <!--引入jquery -->
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- 引入样式-->
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/studentinfo.js"></script>
+    <!--web.xml中如果你用的jsp1.2版本的DTD,默认EL是关闭的，必须开启 -->
+    <!--@ page isELIgnored="false"%-->
+
+    <script>
+
+    </script>
+</head>
+<body>
+
+<!--使用bootstrap搭建页面 -->
+<div class="container">
+    <!--标题 -->
+    <div class="row">
+        <div class="col-md-12">
+            <h1>学生信息管理</h1>
+        </div>
+    </div>
+    <!--按钮 -->
+    <div class="row">
+        <div class="col-md-4 col-md-offset-8 col-sm-4 col-sm-offset-8">
+            <button class="btn btn-primary" id="studentinfo_add_modal_btn">新增</button>
+            <button class="btn btn-danger" id="studentinfo_delete_all_btn">删除</button>
+        </div>
+    </div>
+    <br>
+    <!--显示表格数据 -->
+    <div class="row">
+        <div class="table-responsive col-md-12">
+            <table class="table table-hover" id="studentinfo_table">
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="check_all"/>
+                    </th>
+                    <th>流水号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>年龄</th>
+                    <th>院系</th>
+                    <th>班级</th>
+                    <th>入学日期</th>
+                    <th>电话</th>
+                    <th>籍贯</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+
+
+            </table>
+        </div>
+    </div>
+    <!--显示分页信息 -->
+    <div class="row">
+        <!--分页文字信息 -->
+        <div class="col-md-6 col-sm-6" id="page_info_area">
+            当前第页，总共页，总共条记录
+        </div>
+        <!--分页导航条信息 -->
+        <div class="col-md-6 col-sm-6" id="page_nav_area">
+
+        </div>
+    </div>
+</div>
+
+<!-- 添加学生信息弹出的模态框 -->
+<div class="modal fade" id="studentinfoAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="studentinfoAddModalLabel">添加学生信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" class="form-control" id="name_add_input" placeholder="姓名2-16位中英文、数字">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">性别</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="sex1_add_input" value="男" checked="checked"> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="sex2_add_input" value="女"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">年龄</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="age" class="form-control" id="age_add_input" placeholder="请输入年龄">
+                            <span  class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">院系</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="ys" class="form-control" id="ys_add_input" placeholder="请输入院系">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">班级</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="className" class="form-control" id="className_add_input" placeholder="请输入班级">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">电话</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="tel" class="form-control" id="tel_add_input" placeholder="请输入电话">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">籍贯</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="jg" class="form-control" id="jg_add_input" placeholder="请输入籍贯">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="studentinfo_save_btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改学生信息弹出的模态框 -->
+<div class="modal fade" id="studentinfoUpdateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="studentinfoUpdateModalLabel">修改学生信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" class="form-control" id="name_update_input" placeholder="姓名2-16位中英文、数字">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">性别</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="sex1_update_input" value="男" checked="checked"> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="sex" id="sex2_update_input" value="女"> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">年龄</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="age" class="form-control" id="age_update_input" placeholder="请输入年龄">
+                            <span  class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">院系</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="ys" class="form-control" id="ys_update_input" placeholder="请输入院系">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">班级</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="className" class="form-control" id="className_update_input" placeholder="请输入班级">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">电话</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="tel" class="form-control" id="tel_update_input" placeholder="请输入电话">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">籍贯</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="jg" class="form-control" id="jg_update_input" placeholder="请输入籍贯">
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="studentinfo_update_btn">修改</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

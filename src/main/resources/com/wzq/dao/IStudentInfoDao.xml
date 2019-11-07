@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzq.dao.IStudentInfoDao">
+
+   <select id="getList" resultType="studentinfo">
+      select * from studentinfo where flag='0'
+   </select>
+
+   <select id="findById" parameterType="int" resultType="studentinfo">
+      select * from studentinfo where id=#{id}
+   </select>
+
+   <insert id="save" parameterType="studentinfo">
+      insert studentinfo (name,sex,age,ys,className,hiredate,tel,jg,flag)
+      values
+      (#{name},#{sex},#{age},#{ys},#{className},#{hireDate},#{tel},#{jg},#{flag})
+   </insert>
+
+   <update id="update" parameterType="studentinfo">
+      update studentinfo
+      set name=#{name},age=#{age},ys=#{ys},className=#{className},
+      hiredate=#{hireDate},tel=#{tel},jg=#{jg},flag=#{flag}
+      where id=#{id}
+   </update>
+
+  <update id="delete" parameterType="int">
+     update studentinfo set flag='1' where id=#{id}
+  </update>
+</mapper>
